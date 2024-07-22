@@ -1,16 +1,9 @@
 import bcrypt from "bcryptjs";
-import User from "../models/userModel.js";
+import User from "../models/user.model.js";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
-// console.log();
-export const getsignup = (req, res) => {
-	res.send("Get signup")
-}
-
 export const signup = async (req, res) => {
-	console.log("inside signup");
 	try {
-		console.log(req.body);
 		const { fullName, username, password, confirmPassword, gender } = req.body;
 
 		if (password !== confirmPassword) {
@@ -39,7 +32,7 @@ export const signup = async (req, res) => {
 			gender,
 			profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
 		});
-		console.log(newUser);
+
 		if (newUser) {
 			// Generate JWT token here
 			generateTokenAndSetCookie(newUser._id, res);
@@ -93,4 +86,3 @@ export const logout = (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
-

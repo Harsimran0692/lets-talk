@@ -9,27 +9,22 @@ const useSignup = () => {
 	const signup = async ({ fullName, username, password, confirmPassword, gender }) => {
 		const success = handleInputErrors({ fullName, username, password, confirmPassword, gender });
 		if (!success) return;
-		// console.log("inside 1");
+
 		setLoading(true);
 		try {
-			console.log("inside try");
-			const res = await fetch("api/auth/signup", {
+			const res = await fetch("/api/auth/signup", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ fullName, username, password, confirmPassword, gender }),
 			});
 
-			console.log("res", res);
-
 			const data = await res.json();
-			console.log("data", data);
 			if (data.error) {
 				throw new Error(data.error);
 			}
 			localStorage.setItem("chat-user", JSON.stringify(data));
 			setAuthUser(data);
 		} catch (error) {
-			console.log("inside error");
 			toast.error(error.message);
 		} finally {
 			setLoading(false);
